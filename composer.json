@@ -1,0 +1,38 @@
+{
+  "name": "mehr-als-nix/zf2-saml",
+  "description": "SAML Authentication module for ZF-2.",
+  "minimum-stability": "stable",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Siad Ardroumli",
+      "email": "siad.ardroumli@gmail.com"
+    }
+  ],
+  "require": {
+    "php": ">=5.5",
+    "onelogin/php-saml": "^2.0",
+    "zendframework/zend-crypt": "~2.3",
+    "zendframework/zend-http": "~2.3",
+    "zendframework/zend-mvc": "~2.3",
+    "zendframework/zend-servicemanager": "~2.3",
+    "zfcampus/zf-api-problem": "~1.0",
+    "zfcampus/zf-content-negotiation": "~1.0"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^5.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "MehrAlsNix\\ZF\\SAML\\": "src/"
+    },
+    "classmap": [
+      "Module.php"
+    ]
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "MehrAlsNix\\ZFTest\\SAML\\": "test/"
+    }
+  }
+}
