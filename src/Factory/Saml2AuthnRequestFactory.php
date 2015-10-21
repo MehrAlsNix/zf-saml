@@ -2,10 +2,11 @@
 
 namespace MehrAlsNix\ZF\SAML\Factory;
 
+use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use MehrAlsNix\ZF\SAML\Controller\Exception;
 
-class Saml2AuthnRequestFactory
+class Saml2AuthnRequestFactory implements FactoryInterface
 {
     /**
      * @var ServiceLocatorInterface
@@ -18,27 +19,19 @@ class Saml2AuthnRequestFactory
     private $request;
 
     /**
-     * @var ServiceLocatorInterface $services ServiceLocator for retrieving storage adapters.
-     */
-    public function __construct(ServiceLocatorInterface $services)
-    {
-        $this->services = $services;
-    }
-
-    /**
      * Create an \OneLogin_Saml2_AuthnRequest instance.
      *
-     * @return \OneLogin_Saml2_AuthnRequest
+     * @param ServiceLocatorInterface $services
      *
-     * @throws Exception\RuntimeException
+     * @return \OneLogin_Saml2_AuthnRequest
      */
-    public function __invoke()
+    public function createService(ServiceLocatorInterface $services)
     {
         if ($this->request) {
             return $this->request;
         }
 
-        $settings = $this->services->get('MehrAlsNix\ZF\SAML\Service\SAML2Settings');
+        $settings = $services->get('MehrAlsNix\ZF\SAML\Service\SAML2Settings');
         return $this->request = new \OneLogin_Saml2_AuthnRequest($settings);
     }
 }

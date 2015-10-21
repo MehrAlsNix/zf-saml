@@ -57,8 +57,9 @@ class Saml2AuthnRequestFactoryTest extends AbstractHttpControllerTestCase
             ],
         ]);
         $this->services->setFactory('MehrAlsNix\ZF\SAML\Service\SAML2Settings', 'MehrAlsNix\ZF\SAML\Factory\Saml2SettingsFactory');
+        $this->services->setFactory('MehrAlsNix\ZF\SAML\Service\SAML2AuthRequest', 'MehrAlsNix\ZF\SAML\Factory\Saml2AuthRequestFactory');
         // @codingStandardsIgnoreEnd
-        $this->factory = new Saml2AuthnRequestFactory($this->services);
+        $this->factory = new Saml2AuthnRequestFactory();
     }
 
     /**
@@ -66,7 +67,7 @@ class Saml2AuthnRequestFactoryTest extends AbstractHttpControllerTestCase
      */
     public function instantiation()
     {
-        $service = $this->factory->__invoke();
+        $service = $this->factory->createService($this->services);
         $this->assertInstanceOf('OneLogin_Saml2_AuthnRequest', $service);
     }
 }
