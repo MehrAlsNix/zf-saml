@@ -21,5 +21,11 @@ use Zend\Test\PHPUnit\Controller\AbstractHttpControllerTestCase;
 
 class AuthControllerTest extends AbstractHttpControllerTestCase
 {
-
+    /**
+     * @test
+     */
+    public function icomplete()
+    {
+        $this->markTestIncomplete('No tests yet.');
+    }
 }
