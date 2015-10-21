@@ -31,16 +31,9 @@ class AuthControllerFactory implements FactoryInterface
     public function createService(ServiceLocatorInterface $controllers)
     {
         $services = $controllers->getServiceLocator()->get('ServiceManager');
-        $samlServerFactory = $services->get('MehrAlsNix\ZF\SAML\Service\SamlServer');
-        if ($samlServerFactory instanceof SamlServer) {
-            $samlServer = $samlServerFactory;
-            $samlServerFactory = function () use ($samlServer) {
-                return $samlServer;
-            };
-        }
         $authController = new AuthController(
-            $samlServerFactory,
-            $services->get('MehrAlsNix\ZF\SAML\Provider\UserId')
+            $services->get('MehrAlsNix\ZF\SAML\Service\SAML2Settings'),
+            $services->get('MehrAlsNix\ZF\SAML\Service\SAML2AuthnRequest')
         );
         $config = $services->get('Config');
         $authController->setApiProblemErrorResponse((isset($config['zf-saml']['api_problem_error_response'])

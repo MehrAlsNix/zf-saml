@@ -39,33 +39,27 @@ class AuthController extends AbstractActionController
     protected $server;
 
     /**
-     * @var callable Factory for generating an OAuth2Server instance.
+     * @var \OneLogin_Saml2_Settings $settings
      */
-    protected $serverFactory;
+    protected $settings;
 
     /**
-     * @var UserIdProviderInterface
+     * @var \OneLogin_Saml2_AuthnRequest
      */
-    protected $userIdProvider;
+    protected $authnRequest;
 
     /**
      * Constructor
      *
-     * @param SamlAuth $serverFactory
-     * @param UserIdProviderInterface $userIdProvider
+     * @param \OneLogin_Saml2_Settings $settings
+     * @param \OneLogin_Saml2_AuthnRequest $authnRequest
      *
      * @throws InvalidArgumentException
      */
-    public function __construct($serverFactory, UserIdProviderInterface $userIdProvider)
+    public function __construct($settings, $authnRequest)
     {
-        if (! is_callable($serverFactory)) {
-            throw new InvalidArgumentException(sprintf(
-                'OAuth2 Server factory must be a PHP callable; received %s',
-                (is_object($serverFactory) ? get_class($serverFactory) : gettype($serverFactory))
-            ));
-        }
-        $this->serverFactory  = $serverFactory;
-        $this->userIdProvider = $userIdProvider;
+        $this->settings     = $settings;
+        $this->authnRequest = $authnRequest;
     }
     /**
      * Should the controller return ApiProblemResponse?
@@ -95,8 +89,8 @@ class AuthController extends AbstractActionController
     {
         $session = new Container();
         if (!isset($session['samlUserdata'])) {
-            $settings    = new \OneLogin_Saml2_Settings();
-            $authRequest = new \OneLogin_Saml2_AuthnRequest($settings);
+            $settings    = $this->settings;
+            $authRequest = $this->authnRequest;
             $samlRequest = $authRequest->getRequest();
 
             $parameters  = ['SAMLRequest' => $samlRequest];
@@ -127,7 +121,7 @@ class AuthController extends AbstractActionController
 
     public function sloAction()
     {
-        $samlSettings = new \OneLogin_Saml2_Settings();
+        $samlSettings = $this->settings;
         $idpData = $samlSettings->getIdPData();
         if (isset($idpData['singleLogoutService'], $idpData['singleLogoutService']['url'])) {
             $sloUrl = $idpData['singleLogoutService']['url'];
@@ -157,8 +151,7 @@ class AuthController extends AbstractActionController
      */
     public function metadataAction()
     {
-        $samlSettings = new \OneLogin_Saml2_Settings();
-        $sp = $samlSettings->getSPData();
+        $sp = $this->settings->getSPData();
         $samlMetadata = \OneLogin_Saml2_Metadata::builder($sp);
 
         /** @var Response $httpResponse */
@@ -176,7 +169,7 @@ class AuthController extends AbstractActionController
         $request = $this->getRequest();
         try {
             if ($request->getPost('SAMLResponse') !== null) {
-                $samlSettings = new \OneLogin_Saml2_Settings();
+                $samlSettings = $this->settings;
                 $samlResponse = new \OneLogin_Saml2_Response($samlSettings, $request->getPost('SAMLResponse'));
                 if ($samlResponse->isValid()) {
                     echo 'You are: ' . $samlResponse->getNameId() . '<br>';
