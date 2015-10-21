@@ -14,35 +14,44 @@ return array(
                     'route'    => '/saml',
                     'defaults' => array(
                         'controller' => 'MehrAlsNix\ZF\SAML\Controller\Auth',
-                        'action'     => 'token',
+                        'action'     => 'index',
                     ),
                 ),
                 'may_terminate' => true,
                 'child_routes' => array(
-                    'authorize' => array(
+                    'sso' => array(
                         'type' => 'Zend\Mvc\Router\Http\Literal',
                         'options' => array(
-                            'route' => '/authorize',
+                            'route' => '/sso',
                             'defaults' => array(
-                                'action' => 'authorize',
+                                'action' => 'sso',
                             ),
                         ),
                     ),
-                    'resource' => array(
+                    'slo' => array(
                         'type' => 'Zend\Mvc\Router\Http\Literal',
                         'options' => array(
-                            'route' => '/resource',
+                            'route' => '/slo',
                             'defaults' => array(
-                                'action' => 'resource',
+                                'action' => 'slo',
                             ),
                         ),
                     ),
-                    'code' => array(
+                    'metadata' => array(
                         'type' => 'Zend\Mvc\Router\Http\Literal',
                         'options' => array(
-                            'route' => '/receivecode',
+                            'route' => '/metadata',
                             'defaults' => array(
-                                'action' => 'receiveCode',
+                                'action' => 'metadata',
+                            ),
+                        ),
+                    ),
+                    'consume' => array(
+                        'type' => 'Zend\Mvc\Router\Http\Literal',
+                        'options' => array(
+                            'route' => '/consume',
+                            'defaults' => array(
+                                'action' => 'consume',
                             ),
                         ),
                     ),
@@ -59,13 +68,12 @@ return array(
             'MehrAlsNix\ZF\SAML\Adapter\IbmDb2Adapter' => 'MehrAlsNix\ZF\SAML\Factory\IbmDb2AdapterFactory',
             'MehrAlsNix\ZF\SAML\Adapter\MongoAdapter'  => 'MehrAlsNix\ZF\SAML\Factory\MongoAdapterFactory',
             'MehrAlsNix\ZF\SAML\Provider\UserId\AuthenticationService' => 'MehrAlsNix\ZF\SAML\Provider\UserId\AuthenticationServiceFactory',
-            'MehrAlsNix\ZF\SAML\Service\OAuth2Server'  => 'MehrAlsNix\ZF\SAML\Factory\OAuth2ServerFactory'
+            'MehrAlsNix\ZF\SAML\Service\SAMLServer'  => 'MehrAlsNix\ZF\SAML\Factory\SAMLServerFactory'
         )
     ),
     'view_manager' => array(
         'template_map' => array(
-            'oauth/authorize'    => __DIR__ . '/../view/zf/auth/authorize.phtml',
-            'oauth/receive-code' => __DIR__ . '/../view/zf/auth/receive-code.phtml',
+            'saml/attributes' => __DIR__ . '/../view/zf/auth/attributes.phtml',
         ),
         'template_path_stack' => array(
             __DIR__ . '/../view',
