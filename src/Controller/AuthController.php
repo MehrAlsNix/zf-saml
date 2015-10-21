@@ -143,7 +143,7 @@ class AuthController extends AbstractActionController
             $logoutRequest = new \OneLogin_Saml2_LogoutRequest($samlSettings);
         }
         $samlRequest = $logoutRequest->getRequest();
-        $parameters = array('SAMLRequest' => $samlRequest);
+        $parameters = ['SAMLRequest' => $samlRequest];
         $url = \OneLogin_Saml2_Utils::redirect($sloUrl, $parameters, true);
         $this->redirect()->toUrl($url);
     }
