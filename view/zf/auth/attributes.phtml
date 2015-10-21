@@ -7,11 +7,9 @@ if (!empty($session['samlUserdata'])) {
     printf('You have the following attributes:<br />');
     printf('<table><thead><th>Name</th><th>Values</th></thead><tbody>');
     foreach ($attributes as $attributeName => $attributeValues) {
-        printf('<tr><td>%s</td><td><ul>', \Zend\Filter\StaticFilter::execute($attributeName, 'HtmlEntities'));
-        foreach ($attributeValues as $attributeValue) {
-            printf('<li>%s</li>', \Zend\Filter\StaticFilter::execute($attributeValue, 'HtmlEntities'));
-        }
-        printf('</ul></td></tr>');
+        printf('<tr><td>%s</td><td>', \Zend\Filter\StaticFilter::execute($attributeName, 'HtmlEntities'));
+        printf($this->htmlList($attributeValues));
+        printf('</td></tr>');
     }
     printf('</tbody></table>');
     if (!empty($session['IdPSessionIndex'])) {

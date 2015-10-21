@@ -20,6 +20,7 @@ namespace MehrAlsNix\ZF\SAML\Controller;
 use InvalidArgumentException;
 use RuntimeException;
 use Zend\Http\PhpEnvironment\Request;
+use Zend\Http\PhpEnvironment\Response;
 use Zend\Mvc\Controller\AbstractActionController;
 use OneLogin_Saml2_Auth as SamlAuth;
 use Zend\Session\Container;
@@ -50,8 +51,10 @@ class AuthController extends AbstractActionController
     /**
      * Constructor
      *
-     * @param SamlAuth $server
+     * @param SamlAuth $serverFactory
      * @param UserIdProviderInterface $userIdProvider
+     *
+     * @throws InvalidArgumentException
      */
     public function __construct($serverFactory, UserIdProviderInterface $userIdProvider)
     {
@@ -145,12 +148,26 @@ class AuthController extends AbstractActionController
         $this->redirect()->toUrl($url);
     }
 
+    /**
+     * Your IdP will usually want your metadata, you can use this code to
+     * generate it once, or expose it on a URL so your IdP can check it
+     * periodically.
+     *
+     * @return \Zend\Stdlib\ResponseInterface
+     */
     public function metadataAction()
     {
         $samlSettings = new \OneLogin_Saml2_Settings();
         $sp = $samlSettings->getSPData();
         $samlMetadata = \OneLogin_Saml2_Metadata::builder($sp);
-        echo $samlMetadata;
+
+        /** @var Response $httpResponse */
+        $httpResponse = $this->getResponse();
+        $httpResponse->setStatusCode(200);
+        $httpResponse->getHeaders()->addHeaders(['Content-type' => 'application/xml']);
+        $httpResponse->setContent($samlMetadata);
+
+        return $httpResponse;
     }
 
     public function consumeAction()
