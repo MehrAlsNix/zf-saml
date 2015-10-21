@@ -39,6 +39,7 @@ class Saml2SettingsFactoryTest extends AbstractHttpControllerTestCase
      */
     public function instantiation()
     {
+        // @codingStandardsIgnoreStart
         $this->services->setService('Config', [
             'zf-saml' => [
                 'sp' =>  [
@@ -87,6 +88,7 @@ class Saml2SettingsFactoryTest extends AbstractHttpControllerTestCase
                 ]
             ]
         );
+        // @codingStandardsIgnoreEnd
 
         $service = $this->factory->createService($this->services);
         $this->assertInstanceOf('OneLogin_Saml2_Settings', $service);
