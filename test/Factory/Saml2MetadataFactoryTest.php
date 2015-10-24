@@ -65,7 +65,7 @@ class Saml2MetadataFactoryTest extends AbstractHttpControllerTestCase
     /**
      * @test
      */
-    public function instantiation()
+    public function getXmlMetadata()
     {
         $service = $this->factory->createService($this->services);
         $this->assertInternalType('string', $service);
