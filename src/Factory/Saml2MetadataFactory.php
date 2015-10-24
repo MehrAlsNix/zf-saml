@@ -7,26 +7,26 @@ use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use MehrAlsNix\ZF\SAML\Controller\Exception;
 
-class Saml2AuthnRequestFactory implements FactoryInterface
+class Saml2MetadataFactory implements FactoryInterface
 {
     /**
-     * @var \OneLogin_Saml2_AuthnRequest
+     * @var \OneLogin_Saml2_Metadata
      */
-    private $authnRequest;
+    private $metadata;
 
     /**
-     * Create an \OneLogin_Saml2_AuthnRequest instance.
+     * Create an \OneLogin_Saml2_Metadata instance.
      *
      * @param ServiceLocatorInterface $services
      *
-     * @return \OneLogin_Saml2_AuthnRequest
+     * @return string
      *
      * @throws Exception\RuntimeException
      */
     public function createService(ServiceLocatorInterface $services)
     {
-        if ($this->authnRequest) {
-            return $this->authnRequest;
+        if ($this->metadata) {
+            return $this->metadata;
         }
 
         try {
@@ -36,6 +36,6 @@ class Saml2AuthnRequestFactory implements FactoryInterface
             throw new Exception\RuntimeException($e);
         }
 
-        return $this->authnRequest = new \OneLogin_Saml2_AuthnRequest($settings);
+        return $this->metadata = \OneLogin_Saml2_Metadata::builder($settings->getSPData());
     }
 }

@@ -49,17 +49,24 @@ class AuthController extends AbstractActionController
     protected $authnRequest;
 
     /**
+     * @var string
+     */
+    protected $metadata;
+
+    /**
      * Constructor
      *
      * @param \OneLogin_Saml2_Settings $settings
      * @param \OneLogin_Saml2_AuthnRequest $authnRequest
+     * @param string $metadata
      *
      * @throws InvalidArgumentException
      */
-    public function __construct($settings, $authnRequest)
+    public function __construct($settings, $authnRequest, $metadata)
     {
         $this->settings     = $settings;
         $this->authnRequest = $authnRequest;
+        $this->metadata     = $metadata;
     }
     /**
      * Should the controller return ApiProblemResponse?
@@ -151,14 +158,11 @@ class AuthController extends AbstractActionController
      */
     public function metadataAction()
     {
-        $sp = $this->settings->getSPData();
-        $samlMetadata = \OneLogin_Saml2_Metadata::builder($sp);
-
         /** @var Response $httpResponse */
         $httpResponse = $this->getResponse();
         $httpResponse->setStatusCode(200);
         $httpResponse->getHeaders()->addHeaders(['Content-type' => 'application/xml']);
-        $httpResponse->setContent($samlMetadata);
+        $httpResponse->setContent($this->metadata);
 
         return $httpResponse;
     }

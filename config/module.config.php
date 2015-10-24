@@ -1,93 +1,94 @@
 <?php // @codingStandardsIgnoreFile
 
-return array(
-    'controllers' => array(
-        'factories' => array(
+return [
+    'controllers' => [
+        'factories' => [
             'MehrAlsNix\ZF\SAML\Controller\Auth' => 'MehrAlsNix\ZF\SAML\Factory\AuthControllerFactory',
-        ),
-    ),
-    'router' => array(
-        'routes' => array(
-            'saml' => array(
+        ],
+    ],
+    'router' => [
+        'routes' => [
+            'saml' => [
                 'type' => 'Zend\Mvc\Router\Http\Literal',
-                'options' => array(
+                'options' => [
                     'route'    => '/saml',
-                    'defaults' => array(
+                    'defaults' => [
                         'controller' => 'MehrAlsNix\ZF\SAML\Controller\Auth',
                         'action'     => 'index',
-                    ),
-                ),
+                    ],
+                ],
                 'may_terminate' => true,
-                'child_routes' => array(
-                    'sso' => array(
+                'child_routes' => [
+                    'sso' => [
                         'type' => 'Zend\Mvc\Router\Http\Literal',
-                        'options' => array(
+                        'options' => [
                             'route' => '/sso',
-                            'defaults' => array(
+                            'defaults' => [
                                 'action' => 'sso',
-                            ),
-                        ),
-                    ),
-                    'slo' => array(
+                            ],
+                        ],
+                    ],
+                    'slo' => [
                         'type' => 'Zend\Mvc\Router\Http\Literal',
-                        'options' => array(
+                        'options' => [
                             'route' => '/slo',
-                            'defaults' => array(
+                            'defaults' => [
                                 'action' => 'slo',
-                            ),
-                        ),
-                    ),
-                    'metadata' => array(
+                            ],
+                        ],
+                    ],
+                    'metadata' => [
                         'type' => 'Zend\Mvc\Router\Http\Literal',
-                        'options' => array(
+                        'options' => [
                             'route' => '/metadata',
-                            'defaults' => array(
+                            'defaults' => [
                                 'action' => 'metadata',
-                            ),
-                        ),
-                    ),
-                    'consume' => array(
+                            ],
+                        ],
+                    ],
+                    'consume' => [
                         'type' => 'Zend\Mvc\Router\Http\Literal',
-                        'options' => array(
+                        'options' => [
                             'route' => '/consume',
-                            'defaults' => array(
+                            'defaults' => [
                                 'action' => 'consume',
-                            ),
-                        ),
-                    ),
-                ),
-            ),
-        ),
-    ),
-    'service_manager' => array(
-        'aliases' => array(
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ],
+    ],
+    'service_manager' => [
+        'aliases' => [
             'MehrAlsNix\ZF\SAML\Provider\UserId' => 'MehrAlsNix\ZF\SAML\Provider\UserId\AuthenticationService',
-        ),
-        'factories' => array(
+        ],
+        'factories' => [
             'MehrAlsNix\ZF\SAML\Adapter\PdoAdapter'    => 'MehrAlsNix\ZF\SAML\Factory\PdoAdapterFactory',
             'MehrAlsNix\ZF\SAML\Adapter\IbmDb2Adapter' => 'MehrAlsNix\ZF\SAML\Factory\IbmDb2AdapterFactory',
             'MehrAlsNix\ZF\SAML\Adapter\MongoAdapter'  => 'MehrAlsNix\ZF\SAML\Factory\MongoAdapterFactory',
             'MehrAlsNix\ZF\SAML\Provider\UserId\AuthenticationService' => 'MehrAlsNix\ZF\SAML\Provider\UserId\AuthenticationServiceFactory',
             'MehrAlsNix\ZF\SAML\Service\SAML2Settings' => 'MehrAlsNix\ZF\SAML\Factory\Saml2SettingsFactory',
-            'MehrAlsNix\ZF\SAML\Service\SAML2AuthnRequest' => 'MehrAlsNix\ZF\SAML\Factory\Saml2AuthnRequestFactory'
-        )
-    ),
-    'view_manager' => array(
-        'template_map' => array(
+            'MehrAlsNix\ZF\SAML\Service\SAML2AuthnRequest' => 'MehrAlsNix\ZF\SAML\Factory\Saml2AuthnRequestFactory',
+            'MehrAlsNix\ZF\SAML\Service\SAML2Metadata' => 'MehrAlsNix\ZF\SAML\Factory\Saml2MetadataFactory'
+        ]
+    ],
+    'view_manager' => [
+        'template_map' => [
             'saml/attributes' => __DIR__ . '/../view/zf/auth/attributes.phtml',
-        ),
-        'template_path_stack' => array(
+        ],
+        'template_path_stack' => [
             __DIR__ . '/../view',
-        ),
-    ),
-    'zf-saml' => array(
-        'grant_types' => array(
+        ],
+    ],
+    'zf-saml' => [
+        'grant_types' => [
             'client_credentials' => true,
             'authorization_code' => true,
             'password'           => true,
             'refresh_token'      => true,
             'jwt'                => true,
-        ),
+        ],
         /*
          * Error reporting style
          *
@@ -97,19 +98,19 @@ return array(
          * (default: true)
          */
         'api_problem_error_response' => true,
-    ),
-    'zf-content-negotiation' => array(
-        'controllers' => array(
-            'MehrAlsNix\ZF\SAML\Controller\Auth' => array(
-                'ZF\ContentNegotiation\XmlModel' => array(
+    ],
+    'zf-content-negotiation' => [
+        'controllers' => [
+            'MehrAlsNix\ZF\SAML\Controller\Auth' => [
+                'ZF\ContentNegotiation\XmlModel' => [
                     'application/xml',
                     'application/*+xml',
-                ),
-                'Zend\View\Model\ViewModel' => array(
+                ],
+                'Zend\View\Model\ViewModel' => [
                     'text/html',
                     'application/xhtml+xml',
-                ),
-            ),
-        ),
-    ),
-);
+                ],
+            ],
+        ],
+    ],
+];

@@ -33,7 +33,8 @@ class AuthControllerFactory implements FactoryInterface
         $services = $controllers->getServiceLocator()->get('ServiceManager');
         $authController = new AuthController(
             $services->get('MehrAlsNix\ZF\SAML\Service\SAML2Settings'),
-            $services->get('MehrAlsNix\ZF\SAML\Service\SAML2AuthnRequest')
+            $services->get('MehrAlsNix\ZF\SAML\Service\SAML2AuthnRequest'),
+            $services->get('MehrAlsNix\ZF\SAML\Service\SAML2Metadata')
         );
         $config = $services->get('Config');
         $authController->setApiProblemErrorResponse((isset($config['zf-saml']['api_problem_error_response'])
