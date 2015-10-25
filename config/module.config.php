@@ -78,6 +78,7 @@ return [
     'view_manager' => [
         'template_map' => [
             'saml/attributes' => __DIR__ . '/../view/zf/auth/attributes.phtml',
+            'saml/consumer'   => __DIR__ . '/../view/zf/auth/consumer.phtml'
         ],
         'template_path_stack' => [
             __DIR__ . '/../view',

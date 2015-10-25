@@ -73,29 +73,11 @@ class AuthController extends AbstractActionController
     }
 
     /**
-     * @param \OneLogin_Saml2_Settings $settings
-     */
-    public function setSettings($settings)
-    {
-        if (!$settings instanceof \OneLogin_Saml2_Settings) {
-            $this->settings = $settings;
-        }
-    }
-
-    /**
      * @return \OneLogin_Saml2_AuthnRequest
      */
     public function getAuthnRequest()
     {
         return $this->authnRequest;
-    }
-
-    /**
-     * @param \OneLogin_Saml2_AuthnRequest $authnRequest
-     */
-    public function setAuthnRequest($authnRequest)
-    {
-        $this->authnRequest = $authnRequest;
     }
 
     /**
@@ -120,14 +102,6 @@ class AuthController extends AbstractActionController
     public function getSamlAuth()
     {
         return $this->samlAuth;
-    }
-
-    /**
-     * @param string $metadata
-     */
-    public function setMetadata($metadata)
-    {
-        $this->metadata = $metadata;
     }
 
     /**
@@ -239,32 +213,12 @@ class AuthController extends AbstractActionController
     {
         /** @var Request $request */
         $request = $this->getRequest();
-        try {
-            if ($request->getPost('SAMLResponse') !== null) {
-                $samlResponse = $this->getSamlResponse();
-                if ($samlResponse->isValid()) {
-                    echo 'You are: ' . $samlResponse->getNameId() . '<br>';
-                    $attributes = $samlResponse->getAttributes();
-                    if (!empty($attributes)) {
-                        echo 'You have the following attributes:<br>';
-                        echo '<table><thead><th>Name</th><th>Values</th></thead><tbody>';
-                        foreach ($attributes as $attributeName => $attributeValues) {
-                            echo '<tr><td>' . htmlentities($attributeName) . '</td><td><ul>';
-                            foreach ($attributeValues as $attributeValue) {
-                                echo '<li>' . htmlentities($attributeValue) . '</li>';
-                            }
-                            echo '</ul></td></tr>';
-                        }
-                        echo '</tbody></table>';
-                    }
-                } else {
-                    echo 'Invalid SAML Response';
-                }
-            } else {
-                echo 'No SAML Response found in POST.';
-            }
-        } catch (\Exception $e) {
-            echo 'Invalid SAML Response: ' . $e->getMessage();
-        }
+        $templateVars = [];
+        $templateVars['isSamlResponse']      = (bool) $request->getPost('SAMLResponse');
+        $templateVars['isValidSamlResponse'] = $this->getSamlResponse()->isValid();
+        $templateVars['nameId']              = $this->getSamlResponse()->getNameId();
+        $templateVars['attributes']          = $this->getSamlResponse()->getAttributes();
+
+        return (new ViewModel($templateVars))->setTemplate('saml/consumer');
     }
 }

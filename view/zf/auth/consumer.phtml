@@ -1,0 +1,24 @@
+<?php
+try {
+    if ($this->isSamlResponse) {
+        if ($this->isValidSamlResponse) {
+            printf('You are: %s<br>', $this->nameId);
+            if (!empty($this->attributes)) {
+                printf('You have the following attributes:<br>');
+                printf('<table><thead><th>Name</th><th>Values</th></thead><tbody>');
+                foreach ($this->attributes as $attributeName => $attributeValues) {
+                    printf('<tr><td>%s</td><td>', \Zend\Filter\StaticFilter::execute($attributeName, 'HtmlEntities'));
+                    printf($this->htmlList($attributeValues));
+                    printf('</td></tr>');
+                }
+                printf('</tbody></table>');
+            }
+        } else {
+            printf('Invalid SAML Response');
+        }
+    } else {
+        printf('No SAML Response found in POST.');
+    }
+} catch (\Exception $e) {
+    printf('Invalid SAML Response: ' . $e->getMessage());
+}
