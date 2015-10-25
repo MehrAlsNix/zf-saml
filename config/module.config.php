@@ -64,10 +64,6 @@ return [
             'MehrAlsNix\ZF\SAML\Provider\UserId' => 'MehrAlsNix\ZF\SAML\Provider\UserId\AuthenticationService',
         ],
         'factories' => [
-            'MehrAlsNix\ZF\SAML\Adapter\PdoAdapter'    => 'MehrAlsNix\ZF\SAML\Factory\PdoAdapterFactory',
-            'MehrAlsNix\ZF\SAML\Adapter\IbmDb2Adapter' => 'MehrAlsNix\ZF\SAML\Factory\IbmDb2AdapterFactory',
-            'MehrAlsNix\ZF\SAML\Adapter\MongoAdapter'  => 'MehrAlsNix\ZF\SAML\Factory\MongoAdapterFactory',
-            'MehrAlsNix\ZF\SAML\Provider\UserId\AuthenticationService' => 'MehrAlsNix\ZF\SAML\Provider\UserId\AuthenticationServiceFactory',
             'MehrAlsNix\ZF\SAML\Service\SAML2Settings' => 'MehrAlsNix\ZF\SAML\Factory\Saml2SettingsFactory',
             'MehrAlsNix\ZF\SAML\Service\SAML2AuthnRequest' => 'MehrAlsNix\ZF\SAML\Factory\Saml2AuthnRequestFactory',
             'MehrAlsNix\ZF\SAML\Service\SAML2Metadata' => 'MehrAlsNix\ZF\SAML\Factory\Saml2MetadataFactory',
