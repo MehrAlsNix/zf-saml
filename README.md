@@ -8,7 +8,7 @@ This module uses `onelogin/php-saml` internally and wrap the function in service
 
 ## Installation
 
-Just require `mehr-asl-nix/zf-saml` in your `composer.json`.
+Just require `mehr-als-nix/zf-saml` in your `composer.json`.
 
 Enable it in application.config.php
 ```
