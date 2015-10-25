@@ -8,7 +8,18 @@ This module uses `onelogin/php-saml` internally and wrap the function in service
 
 ## Installation
 
-tbd
+Just require `mehr-asl-nix/zf-saml` in your `composer.json`.
+
+Enable it in application.config.php
+```
+    'modules' => array (
+        // ---8<---
+        'ZF\ApiProblem',
+        'ZF\ContentNegotiation',
+        'MehrAlsNix\ZF\SAML',
+        // --->8---
+    ),
+```
 
 ## Configuration
 
