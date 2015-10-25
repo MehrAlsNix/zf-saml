@@ -139,8 +139,7 @@ class AuthController extends AbstractActionController
             $parameters  = ['SAMLRequest' => $samlRequest];
             $parameters['RelayState'] = \OneLogin_Saml2_Utils::getSelfURLNoQuery();
 
-            $idpData = $settings->getIdPData();
-            $ssoUrl  = $idpData['singleSignOnService']['url'];
+            $ssoUrl  = $settings->getIdPData()['singleSignOnService']['url'];
 
             $this->redirect()->toUrl(
                 \OneLogin_Saml2_Utils::redirect($ssoUrl, $parameters, true)
@@ -185,6 +184,44 @@ class AuthController extends AbstractActionController
         $this->redirect()->toUrl($url);
     }
 
+    public function acsAction()
+    {
+        $auth = $this->getSamlAuth();
+        $auth->processResponse();
+        $errors = $auth->getErrors();
+        if (!empty($errors)) {
+            return $this->flashMessenger()->addErrorMessage(implode(', ', $errors));
+        }
+        if (!$auth->isAuthenticated()) {
+            return $this->flashMessenger()->addWarningMessage('Not authenticated');
+        }
+        $session = new Container();
+        $session['samlUserdata']    = $auth->getAttributes();
+        $session['IdPSessionIndex'] = $auth->getSessionIndex();
+
+        /** @var Request $httpRequest */
+        $httpRequest = $this->getRequest();
+        if ($httpRequest->getPost('RelayState') !== null
+            && $httpRequest->getPost('RelayState') !== \OneLogin_Saml2_Utils::getSelfURL()
+        ) {
+            $auth->redirectTo($httpRequest->getPost('RelayState'));
+        }
+
+        return (new ViewModel())->setTemplate('saml/attributes');
+    }
+
+    public function slsAction()
+    {
+        $auth = $this->getSamlAuth();
+        $auth->processSLO();
+        $errors = $auth->getErrors();
+        if (empty($errors)) {
+            return $this->flashMessenger()->addSuccessMessage('Sucessfully logged out');
+        }
+
+        return $this->flashMessenger()->addErrorMessage(implode(', ', $errors));
+    }
+
     /**
      * Your IdP will usually want your metadata, you can use this code to
      * generate it once, or expose it on a URL so your IdP can check it
@@ -209,6 +246,13 @@ class AuthController extends AbstractActionController
         return $httpResponse;
     }
 
+    /**
+     * This action will have been given during the SAML authorization.
+     * After a successful authorization, the browser will be directed to this
+     * link where it will send a certified response via $_POST.
+     *
+     * @return \Zend\View\Model\ViewModel
+     */
     public function consumeAction()
     {
         /** @var Request $request */
