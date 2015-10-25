@@ -23,7 +23,7 @@ Enable it in application.config.php
 
 ## Configuration
 
-tbd
+Copy `saml.local.php.dist` to `config/autoload/saml.local.php`
 
 ## Services
 
