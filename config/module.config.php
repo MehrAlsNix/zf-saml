@@ -19,6 +19,15 @@ return [
                 ],
                 'may_terminate' => true,
                 'child_routes' => [
+                    'acs' => [
+                        'type' => 'Zend\Mvc\Router\Http\Literal',
+                        'options' => [
+                            'route' => '/acs',
+                            'defaults' => [
+                                'action' => 'acs',
+                            ],
+                        ],
+                    ],
                     'sso' => [
                         'type' => 'Zend\Mvc\Router\Http\Literal',
                         'options' => [
@@ -34,6 +43,15 @@ return [
                             'route' => '/slo',
                             'defaults' => [
                                 'action' => 'slo',
+                            ],
+                        ],
+                    ],
+                    'sls' => [
+                        'type' => 'Zend\Mvc\Router\Http\Literal',
+                        'options' => [
+                            'route' => '/sls',
+                            'defaults' => [
+                                'action' => 'sls',
                             ],
                         ],
                     ],

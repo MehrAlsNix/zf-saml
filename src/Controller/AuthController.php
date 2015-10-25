@@ -22,7 +22,6 @@ use Zend\Http\Exception\InvalidArgumentException as HttpInvalidArgumentException
 use Zend\Http\PhpEnvironment\Request;
 use Zend\Http\PhpEnvironment\Response;
 use Zend\Mvc\Controller\AbstractActionController;
-use OneLogin_Saml2_Auth as SamlAuth;
 use Zend\Session\Container;
 use ZF\ContentNegotiation\ViewModel;
 
