@@ -17,8 +17,8 @@
 
 namespace MehrAlsNix\ZF\SAML\Controller;
 
-use InvalidArgumentException;
 use RuntimeException;
+use Zend\Http\Exception\InvalidArgumentException as HttpInvalidArgumentException;
 use Zend\Http\PhpEnvironment\Request;
 use Zend\Http\PhpEnvironment\Response;
 use Zend\Mvc\Controller\AbstractActionController;
@@ -54,20 +54,68 @@ class AuthController extends AbstractActionController
     protected $metadata;
 
     /**
-     * Constructor
-     *
-     * @param \OneLogin_Saml2_Settings $settings
-     * @param \OneLogin_Saml2_AuthnRequest $authnRequest
-     * @param string $metadata
-     *
-     * @throws InvalidArgumentException
+     * @var \OneLogin_Saml2_Response
      */
-    public function __construct($settings, $authnRequest, $metadata)
+    protected $samlResponse;
+
+    /**
+     * @return \OneLogin_Saml2_Settings
+     */
+    public function getSettings()
     {
-        $this->settings     = $settings;
-        $this->authnRequest = $authnRequest;
-        $this->metadata     = $metadata;
+        return $this->settings;
     }
+
+    /**
+     * @param \OneLogin_Saml2_Settings $settings
+     */
+    public function setSettings($settings)
+    {
+        if (!$settings instanceof \OneLogin_Saml2_Settings) {
+            $this->settings = $settings;
+        }
+    }
+
+    /**
+     * @return \OneLogin_Saml2_AuthnRequest
+     */
+    public function getAuthnRequest()
+    {
+        return $this->authnRequest;
+    }
+
+    /**
+     * @param \OneLogin_Saml2_AuthnRequest $authnRequest
+     */
+    public function setAuthnRequest($authnRequest)
+    {
+        $this->authnRequest = $authnRequest;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMetadata()
+    {
+        return $this->metadata;
+    }
+
+    /**
+     * @return \OneLogin_Saml2_Response
+     */
+    public function getSamlResponse()
+    {
+        return $this->samlResponse;
+    }
+
+    /**
+     * @param string $metadata
+     */
+    public function setMetadata($metadata)
+    {
+        $this->metadata = $metadata;
+    }
+
     /**
      * Should the controller return ApiProblemResponse?
      *
@@ -155,13 +203,19 @@ class AuthController extends AbstractActionController
      * periodically.
      *
      * @return \Zend\Stdlib\ResponseInterface
+     *
+     * @throws Exception\RuntimeException
      */
     public function metadataAction()
     {
         /** @var Response $httpResponse */
         $httpResponse = $this->getResponse();
-        $httpResponse->setStatusCode(200);
-        $httpResponse->getHeaders()->addHeaders(['Content-type' => 'application/xml']);
+        try {
+            $httpResponse->setStatusCode(200);
+            $httpResponse->getHeaders()->addHeaders(['Content-type' => 'application/xml']);
+        } catch (HttpInvalidArgumentException $e) {
+            throw new Exception\RuntimeException($e);
+        }
         $httpResponse->setContent($this->metadata);
 
         return $httpResponse;
@@ -173,8 +227,7 @@ class AuthController extends AbstractActionController
         $request = $this->getRequest();
         try {
             if ($request->getPost('SAMLResponse') !== null) {
-                $samlSettings = $this->settings;
-                $samlResponse = new \OneLogin_Saml2_Response($samlSettings, $request->getPost('SAMLResponse'));
+                $samlResponse = $this->getSamlResponse();
                 if ($samlResponse->isValid()) {
                     echo 'You are: ' . $samlResponse->getNameId() . '<br>';
                     $attributes = $samlResponse->getAttributes();

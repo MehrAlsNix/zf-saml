@@ -70,7 +70,9 @@ return [
             'MehrAlsNix\ZF\SAML\Provider\UserId\AuthenticationService' => 'MehrAlsNix\ZF\SAML\Provider\UserId\AuthenticationServiceFactory',
             'MehrAlsNix\ZF\SAML\Service\SAML2Settings' => 'MehrAlsNix\ZF\SAML\Factory\Saml2SettingsFactory',
             'MehrAlsNix\ZF\SAML\Service\SAML2AuthnRequest' => 'MehrAlsNix\ZF\SAML\Factory\Saml2AuthnRequestFactory',
-            'MehrAlsNix\ZF\SAML\Service\SAML2Metadata' => 'MehrAlsNix\ZF\SAML\Factory\Saml2MetadataFactory'
+            'MehrAlsNix\ZF\SAML\Service\SAML2Metadata' => 'MehrAlsNix\ZF\SAML\Factory\Saml2MetadataFactory',
+            'MehrAlsNix\ZF\SAML\Service\SAML2Auth' => 'MehrAlsNix\ZF\SAML\Factory\Saml2AuthFactory',
+            'MehrAlsNix\ZF\SAML\Service\SAML2Response' => 'MehrAlsNix\ZF\SAML\Factory\Saml2ResponseFactory'
         ]
     ],
     'view_manager' => [

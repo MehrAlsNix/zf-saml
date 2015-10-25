@@ -31,11 +31,11 @@ class AuthControllerFactory implements FactoryInterface
     public function createService(ServiceLocatorInterface $controllers)
     {
         $services = $controllers->getServiceLocator()->get('ServiceManager');
-        $authController = new AuthController(
-            $services->get('MehrAlsNix\ZF\SAML\Service\SAML2Settings'),
-            $services->get('MehrAlsNix\ZF\SAML\Service\SAML2AuthnRequest'),
-            $services->get('MehrAlsNix\ZF\SAML\Service\SAML2Metadata')
-        );
+        $authController = new AuthController();
+        $authController->setSettings($services->get('MehrAlsNix\ZF\SAML\Service\SAML2Settings'));
+        $authController->setAuthnRequest($services->get('MehrAlsNix\ZF\SAML\Service\SAML2AuthnRequest'));
+        $authController->setMetadata($services->get('MehrAlsNix\ZF\SAML\Service\SAML2Metadata'));
+
         $config = $services->get('Config');
         $authController->setApiProblemErrorResponse((isset($config['zf-saml']['api_problem_error_response'])
             && $config['zf-saml']['api_problem_error_response'] === true));
