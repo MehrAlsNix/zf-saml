@@ -59,6 +59,12 @@ class AuthController extends AbstractActionController
     protected $samlResponse;
 
     /**
+     * @var \OneLogin_Saml2_Auth
+     */
+    protected $samlAuth;
+
+
+    /**
      * @return \OneLogin_Saml2_Settings
      */
     public function getSettings()
@@ -106,6 +112,14 @@ class AuthController extends AbstractActionController
     public function getSamlResponse()
     {
         return $this->samlResponse;
+    }
+
+    /**
+     * @return \OneLogin_Saml2_Auth
+     */
+    public function getSamlAuth()
+    {
+        return $this->samlAuth;
     }
 
     /**
@@ -165,7 +179,7 @@ class AuthController extends AbstractActionController
     public function ssoAction()
     {
         $session = new Container();
-        $auth = new \OneLogin_Saml2_Auth();
+        $auth = $this->getSamlAuth();
         if (!isset($session['samlUserdata'])) {
             $auth->login();
         } else {
