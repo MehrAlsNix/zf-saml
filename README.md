@@ -2,6 +2,8 @@
 
 SAML authentication module for ZF2.
 
+[![Build Status](https://travis-ci.org/MehrAlsNix/zf-saml.svg)](https://travis-ci.org/MehrAlsNix/zf-saml)
+
 This module uses `onelogin/php-saml` internally and wrap the function in services.
 
 ## Installation
