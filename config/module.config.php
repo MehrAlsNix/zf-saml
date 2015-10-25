@@ -99,13 +99,6 @@ return [
         ],
     ],
     'zf-saml' => [
-        'grant_types' => [
-            'client_credentials' => true,
-            'authorization_code' => true,
-            'password'           => true,
-            'refresh_token'      => true,
-            'jwt'                => true,
-        ],
         /*
          * Error reporting style
          *
