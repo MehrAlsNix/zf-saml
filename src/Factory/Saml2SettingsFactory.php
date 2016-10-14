@@ -9,7 +9,11 @@ class Saml2SettingsFactory implements FactoryInterface
 {
     /**
      * @param ServiceLocatorInterface $services
+     *
      * @return \OneLogin_Saml2_Settings
+     *
+     * @throws \Zend\ServiceManager\Exception\ServiceNotFoundException
+     * @throws \OneLogin_Saml2_Error
      */
     public function createService(ServiceLocatorInterface $services)
     {

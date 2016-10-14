@@ -12,7 +12,8 @@ class Saml2AuthFactory implements FactoryInterface
 
     /**
      * @param ServiceLocatorInterface $services
-     * @return \OneLogin_Saml2_Settings
+     * @return \OneLogin_Saml2_Auth
+     * @throws \MehrAlsNix\ZF\SAML\Controller\Exception\RuntimeException
      */
     public function createService(ServiceLocatorInterface $services)
     {

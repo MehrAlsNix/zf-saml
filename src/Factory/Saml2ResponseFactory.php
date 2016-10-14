@@ -10,7 +10,7 @@ use MehrAlsNix\ZF\SAML\Controller\Exception;
 class Saml2ResponseFactory implements FactoryInterface
 {
     /**
-     * @var \OneLogin_Saml2_AuthnRequest
+     * @var \OneLogin_Saml2_Response
      */
     private $response;
 

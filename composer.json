@@ -11,7 +11,7 @@
   ],
   "require": {
     "php": ">=5.5",
-    "onelogin/php-saml": "^2.0",
+    "onelogin/php-saml": "~2.10",
     "zendframework/zend-crypt": "~2.3",
     "zendframework/zend-http": "~2.3",
     "zendframework/zend-mvc": "~2.3",
