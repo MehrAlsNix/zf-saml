@@ -7,6 +7,10 @@ use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use MehrAlsNix\ZF\SAML\Controller\Exception;
 
+/**
+ * Class Saml2AuthnRequestFactory
+ * @package MehrAlsNix\ZF\SAML\Factory
+ */
 class Saml2AuthnRequestFactory implements FactoryInterface
 {
     /**

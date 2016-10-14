@@ -25,6 +25,10 @@ use Zend\Mvc\Controller\AbstractActionController;
 use Zend\Session\Container;
 use ZF\ContentNegotiation\ViewModel;
 
+/**
+ * Class AuthController
+ * @package MehrAlsNix\ZF\SAML\Controller
+ */
 class AuthController extends AbstractActionController
 {
     /**
@@ -120,13 +124,19 @@ class AuthController extends AbstractActionController
      * default), while false indicates oauth2 errors (per the oauth2 spec)
      * should be returned.
      *
-     * @param bool $apiProblemErrorResponse
+     * @param bool $apiProblemErrorResponse `true`  for ApiProblemResponse
+     *                                       false` for oauth2 errors
      */
     public function setApiProblemErrorResponse($apiProblemErrorResponse)
     {
         $this->apiProblemErrorResponse = (bool) $apiProblemErrorResponse;
     }
 
+    /**
+     * @return \Zend\View\Model\ViewModel
+     * @throws \OneLogin_Saml2_Error
+     * @throws \Zend\Session\Exception\InvalidArgumentException
+     */
     public function indexAction()
     {
         $session = new Container();
@@ -183,12 +193,17 @@ class AuthController extends AbstractActionController
         $this->redirect()->toUrl($url);
     }
 
+    /**
+     * @return \Zend\Mvc\Controller\Plugin\FlashMessenger|\Zend\View\Model\ViewModel
+     * @throws \OneLogin_Saml2_Error
+     * @throws \Zend\Session\Exception\InvalidArgumentException
+     */
     public function acsAction()
     {
         $auth = $this->getSamlAuth();
         $auth->processResponse();
         $errors = $auth->getErrors();
-        if (!empty($errors)) {
+        if (count($errors) > 0) {
             return $this->flashMessenger()->addErrorMessage(implode(', ', $errors));
         }
         if (!$auth->isAuthenticated()) {
@@ -198,24 +213,28 @@ class AuthController extends AbstractActionController
         $session['samlUserdata']    = $auth->getAttributes();
         $session['IdPSessionIndex'] = $auth->getSessionIndex();
 
-        /** @var Request $httpRequest */
-        $httpRequest = $this->getRequest();
-        if ($httpRequest->getPost('RelayState') !== null
-            && $httpRequest->getPost('RelayState') !== \OneLogin_Saml2_Utils::getSelfURL()
+        $relayState = $this->getRequest()->getPost('RelayState');
+        if ($relayState !== null
+            && $relayState !== \OneLogin_Saml2_Utils::getSelfURL()
         ) {
-            $auth->redirectTo($httpRequest->getPost('RelayState'));
+            $auth->redirectTo($relayState);
         }
 
         return (new ViewModel())->setTemplate('saml/attributes');
     }
 
+    /**
+     * @return \Zend\Mvc\Controller\Plugin\FlashMessenger
+     * @throws \OneLogin_Saml2_Error
+     */
     public function slsAction()
     {
         $auth = $this->getSamlAuth();
         $auth->processSLO();
         $errors = $auth->getErrors();
-        if (empty($errors)) {
-            return $this->flashMessenger()->addSuccessMessage('Sucessfully logged out');
+        if (0 === count($errors)) {
+            return $this->flashMessenger()
+                ->addSuccessMessage('Sucessfully logged out');
         }
 
         return $this->flashMessenger()->addErrorMessage(implode(', ', $errors));
@@ -236,7 +255,8 @@ class AuthController extends AbstractActionController
         $httpResponse = $this->getResponse();
         try {
             $httpResponse->setStatusCode(200);
-            $httpResponse->getHeaders()->addHeaders(['Content-type' => 'application/xml']);
+            $httpResponse->getHeaders()
+                ->addHeaders(['Content-type' => 'application/xml']);
         } catch (HttpInvalidArgumentException $e) {
             throw new Exception\RuntimeException($e);
         }
@@ -251,16 +271,20 @@ class AuthController extends AbstractActionController
      * link where it will send a certified response via $_POST.
      *
      * @return \Zend\View\Model\ViewModel
+     * @throws \Exception
      */
     public function consumeAction()
     {
-        /** @var Request $request */
+        /* @var Request $request */
         $request = $this->getRequest();
         $templateVars = [];
-        $templateVars['isSamlResponse']      = (bool) $request->getPost('SAMLResponse');
-        $templateVars['isValidSamlResponse'] = $this->getSamlResponse()->isValid();
-        $templateVars['nameId']              = $this->getSamlResponse()->getNameId();
-        $templateVars['attributes']          = $this->getSamlResponse()->getAttributes();
+        $templateVars['isSamlResponse'] = (bool) $request
+            ->getPost('SAMLResponse');
+        $templateVars['isValidSamlResponse'] = $this->getSamlResponse()
+            ->isValid();
+        $templateVars['nameId'] = $this->getSamlResponse()->getNameId();
+        $templateVars['attributes'] = $this->getSamlResponse()
+            ->getAttributes();
 
         return (new ViewModel($templateVars))->setTemplate('saml/consumer');
     }

@@ -19,6 +19,10 @@ namespace MehrAlsNix\ZF\SAML\Controller\Exception;
 
 use MehrAlsNix\ZF\SAML\ExceptionInterface as SAMLException;
 
+/**
+ * Interface ExceptionInterface
+ * @package MehrAlsNix\ZF\SAML\Controller\Exception
+ */
 interface ExceptionInterface extends SAMLException
 {
 }

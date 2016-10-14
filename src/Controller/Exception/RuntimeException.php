@@ -17,6 +17,10 @@
 
 namespace MehrAlsNix\ZF\SAML\Controller\Exception;
 
+/**
+ * Class RuntimeException
+ * @package MehrAlsNix\ZF\SAML\Controller\Exception
+ */
 class RuntimeException extends \RuntimeException implements ExceptionInterface
 {
 }

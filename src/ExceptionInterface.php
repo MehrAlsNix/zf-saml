@@ -17,6 +17,10 @@
 
 namespace MehrAlsNix\ZF\SAML;
 
+/**
+ * Interface ExceptionInterface
+ * @package MehrAlsNix\ZF\SAML
+ */
 interface ExceptionInterface
 {
 }

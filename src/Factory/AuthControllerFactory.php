@@ -18,10 +18,15 @@
 namespace MehrAlsNix\ZF\SAML\Factory;
 
 use MehrAlsNix\ZF\SAML\Controller\AuthController;
-use OneLogin_Saml2_Auth as SamlServer;
+
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
+/**
+ * Class AuthControllerFactory
+ *
+ * @package MehrAlsNix\ZF\SAML\Factory
+ */
 class AuthControllerFactory implements FactoryInterface
 {
     /**
@@ -37,8 +42,8 @@ class AuthControllerFactory implements FactoryInterface
         $authController->setMetadata($services->get('MehrAlsNix\ZF\SAML\Service\SAML2Metadata'));
 
         $config = $services->get('Config');
-        $authController->setApiProblemErrorResponse((isset($config['zf-saml']['api_problem_error_response'])
-            && $config['zf-saml']['api_problem_error_response'] === true));
+        $authController->setApiProblemErrorResponse(isset($config['zf-saml']['api_problem_error_response'])
+            && $config['zf-saml']['api_problem_error_response'] === true);
         return $authController;
     }
 }
