@@ -6,7 +6,7 @@ build:
             -
                 command: phpunit --coverage-clover=build/logs/clover.xml
                 coverage:
-                    file: my-coverage-file
+                    file: build/logs/clover.xml
                     format: php-clover
 
 
