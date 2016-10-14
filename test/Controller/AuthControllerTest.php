@@ -26,6 +26,6 @@ class AuthControllerTest extends AbstractHttpControllerTestCase
      */
     public function incomplete()
     {
-        $this->markTestIncomplete('No tests yet.');
+        $this->markTestSkipped('No tests yet.');
     }
 }
