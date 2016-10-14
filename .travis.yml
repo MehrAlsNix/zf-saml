@@ -2,9 +2,6 @@ sudo: false
 
 language: php
 
-services:
-  - mongodb
-
 cache:
   directories:
     - $HOME/.composer/cache
@@ -35,5 +32,6 @@ install:
   - travis_retry composer install --no-interaction --ignore-platform-reqs --prefer-source
 
 script:
-  - ./vendor/bin/phpunit
+  - mkdir build/logs/
+  - ./vendor/bin/phpunit --coverage-clover build/logs/clover.xml
   - if [[ $EXECUTE_CS_CHECK == 'true' ]]; then ./vendor/bin/phpcs ; fi

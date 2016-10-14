@@ -1,5 +1,14 @@
 before_commands:
     - "composer install --no-dev --prefer-source"
+build:
+    tests:
+        override:
+            -
+                command: phpunit --coverage-clover=build/logs/clover.xml
+                coverage:
+                    file: my-coverage-file
+                    format: php-clover
+
 
 tools:
     external_code_coverage:
@@ -7,9 +16,6 @@ tools:
         timeout: 500
         filter:
             excluded_paths: ["test", "vendor", "view", "config"]
-    php_code_coverage:
-        enabled: false
-        test_command: phpunit
     php_code_sniffer:
         enabled: true
         config:
