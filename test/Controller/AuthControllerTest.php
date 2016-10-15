@@ -22,7 +22,7 @@ use Zend\Test\PHPUnit\Controller\AbstractHttpControllerTestCase;
 class AuthControllerTest extends AbstractHttpControllerTestCase
 {
     /**
-     * @test
+     * @ test
      */
     public function incomplete()
     {
