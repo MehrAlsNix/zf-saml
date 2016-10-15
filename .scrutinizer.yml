@@ -11,11 +11,9 @@ build:
 
 
 tools:
-    external_code_coverage:
-        enabled: true
-        timeout: 500
-        filter:
-            excluded_paths: ["test", "vendor", "view", "config"]
+    php_code_coverage:
+        enabled: false
+        test_command: phpunit
     php_code_sniffer:
         enabled: true
         config:
