@@ -21,11 +21,19 @@ use Zend\Test\PHPUnit\Controller\AbstractHttpControllerTestCase;
 
 class AuthControllerTest extends AbstractHttpControllerTestCase
 {
+    protected $traceError = true;
+
+    public function setUp()
+    {
+        $this->setApplicationConfig([]); // include __DIR__ . '/../TestAsset/zend.authenticationservice.application.config.php');
+        parent::setUp();
+    }
+
     /**
      * @test
      */
     public function incomplete()
     {
-        $this->assertTrue(true);
+        $this->markTestIncomplete('to be tested');
     }
 }
