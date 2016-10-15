@@ -25,7 +25,7 @@ class AuthControllerTest extends AbstractHttpControllerTestCase
 
     public function setUp()
     {
-        $this->setApplicationConfig([]); // include __DIR__ . '/../TestAsset/zend.authenticationservice.application.config.php');
+        $this->setApplicationConfig([]);
         parent::setUp();
     }
 
