@@ -17,6 +17,10 @@
     <filter>
         <whitelist>
             <directory suffix=".php">src</directory>
+            <exclude>config</exclude>
+            <exclude>test</exclude>
+            <exclude>vendor</exclude>
+            <exclude>view</exclude>
         </whitelist>
     </filter>
 </phpunit>
