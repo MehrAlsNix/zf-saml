@@ -32,6 +32,6 @@ install:
   - travis_retry composer install --no-interaction --ignore-platform-reqs --prefer-source
 
 script:
-  - mkdir build/logs/
+  - mkdir -p build/logs/
   - ./vendor/bin/phpunit --coverage-clover build/logs/clover.xml
   - if [[ $EXECUTE_CS_CHECK == 'true' ]]; then ./vendor/bin/phpcs ; fi
